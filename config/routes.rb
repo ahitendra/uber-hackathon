@@ -7,11 +7,14 @@ Rails.application.routes.draw do
   root 'home#index'
 
   namespace :sms do
-    get 'sendsms'
     post 'receive_sms'
   end
 
   post 'access_token' => 'home#access_token'
+  
+  namespace :users do
+    post 'add_phone'
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -11,11 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160112095910) do
+ActiveRecord::Schema.define(version: 20160112125623) do
+
+  create_table "bookings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string   "name"
+    t.string   "uber_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",      null: false
-    t.string   "auth_token", null: false
+    t.text     "auth_token", null: false
     t.string   "phone",      null: false
     t.string   "first_name"
     t.string   "last_name"

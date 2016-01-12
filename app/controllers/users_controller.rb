@@ -1,6 +1,15 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  def add_phone
+    return if params[:phone].blank? || params[:acess_token].blank?
+    u = User.where(auth_token: params[:access_token]).first
+    u.phone = params[:phone]
+    u.save!
+    render json: { status: 'success' }
+  end
+
+
   # GET /users
   # GET /users.json
   def index

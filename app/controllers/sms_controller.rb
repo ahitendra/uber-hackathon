@@ -2,7 +2,8 @@ class SmsController < ApplicationController
 
   def receive_sms
     phone = params[:From]
-    token = User.get_auth_token(phone)
+    @user = User.where(phone: phone).last
+    token = @user.auth_token
     # make a call to uber depending on the text contents
     # 'params[:Body]' has the sms content
     
@@ -12,6 +13,13 @@ class SmsController < ApplicationController
     #   r.Message respnose
     # end
     # twiml.text
+    book_uber
+  end
+
+  private
+
+  def book_uber
+    response = Booking.book_uber(params)
   end
 
 end
