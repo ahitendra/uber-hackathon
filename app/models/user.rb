@@ -99,6 +99,7 @@ class User < ActiveRecord::Base
         sms_text = "Driver name: #{final_response["driver"]["name"]}, Number: #{final_response["driver"]["phone_number"]}, Vehicle name: #{final_response["vehicle"]["make"]} #{final_response["vehicle"]["model"]}, license_plate, Licence number: #{final_response["vehicle"]["license_plate"]}" 
         self.self.sendsms(self.phone, sms_text)
       end
+    end
   end
 
 end
