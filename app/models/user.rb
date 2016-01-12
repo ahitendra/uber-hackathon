@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   end
 
   def self.get_book_params(params)
-    body = params[:Body].split(",") if params[:Body].present?
+    body = params['Body'].to_s.split(",") if params['Body'].present?
     if body.present? and body.first.include?("book")
       start_latitude  = body[1].include?("lat") && body[1].split(":")[1]
       start_longitude = body[2].include?("lng") && body[2].split(":")[1]
