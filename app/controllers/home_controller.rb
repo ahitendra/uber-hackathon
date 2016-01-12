@@ -6,4 +6,7 @@ class HomeController < ApplicationController
     User.get_info(token)
     render json: { status: 'success' }
   end
+
+  def index
+  end
 end
