@@ -14,12 +14,13 @@ class SmsController < ApplicationController
     # end
     # twiml.text
     book_uber
+    render json: { status: 'success' }
   end
 
   private
 
   def book_uber
-    response = Booking.book_uber(params)
+    response = @user.book_uber(params)
   end
 
 end
