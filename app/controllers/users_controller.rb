@@ -2,7 +2,9 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def add_phone
-    return if params[:phone].blank? || params[:acess_token].blank?
+    puts params[:phone].to_s
+    puts params[:access_token].to_s
+    render json: {error: 'missing_params'} and return if params[:phone].blank? || params[:access_token].blank?
     u = User.where(auth_token: params[:access_token]).first
     u.phone = params[:phone]
     u.save!
