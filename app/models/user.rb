@@ -30,8 +30,6 @@ class User < ActiveRecord::Base
     begin
       response = RestClient::Request.execute(:url => url, :headers => {:Authorization => token, 'Content-Type' => 'application/json'},:ssl_version => 'TLSv1_2', :method => 'post', :payload => params)
       self.update_booking(JSON.parse(response)) if response
-    rescue Exception => e
-      response = nil
     end
     JSON.parse(response) if response
   end
