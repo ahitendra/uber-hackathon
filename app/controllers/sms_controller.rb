@@ -3,7 +3,7 @@ class SmsController < ApplicationController
   def receive_sms
     phone = params['From'].to_s
     Rails.logger.info params['From'].to_s + "*************************"
-    @user = User.where(phone: phone).last
+    @user = User.where(phone: "+918096781948").last
     # make a call to uber depending on the text contents
     # 'params[:Body]' has the sms content
     
