@@ -29,7 +29,6 @@ class User < ActiveRecord::Base
       response = RestClient::Request.execute(:url => url, :ssl_version => 'TLSv1_2', :method => 'post', :payload => params)
     rescue Exception => e
       response = nil
-      puts e.to_s
     end
     JSON.parse(response) if response
   end
