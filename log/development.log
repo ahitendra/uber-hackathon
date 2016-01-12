@@ -546,3 +546,149 @@ Started POST "/access_token" for 127.0.0.1 at 2016-01-12 16:40:36 +0530
 Processing by HomeController#access_token as HTML
   Parameters: {"access_token"=>"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsiYWxsX3RyaXBzIiwicmVxdWVzdCIsInByb2ZpbGUiXSwic3ViIjoiZjZkYzI5NjItOWVmMy00MWMzLTlhZmYtYzFjOGRkODY4NzlhIiwiaXNzIjoidWJlci11czEiLCJqdGkiOiI1ZmFhNTBiMy1jYWI2LTRlYTAtOWQ3OS03NTY3Y2Q0YmQ3NjMiLCJleHAiOjE0NTUxODkwMzYsImlhdCI6MTQ1MjU5NzAzNiwidWFjdCI6ImV5aDVKV0lsVnc4bGxLUzNLeVUyRXdzajFSZ1FUNiIsIm5iZiI6MTQ1MjU5Njk0NiwiYXVkIjoiVUZIUVZPeFA0V2RPNlUzNHRndjExalB1bGJZU2RwOEgifQ.l2dxN1yeOZ6Rl6530c-GuJQZqFP68bd2HMS-9EwI0swYRpWYSxrJh-bXgDKAJjRlZQP50oRDe26MRNgD-TPjk3Dd1NDoO0TeVqeZ_fowVjn45U7jujXGIq8Y7nI9lh9OUF5Y-J1iVCrr_rXKBTo23NCDI41LZe93e992xt368fx39AeO_rUeB9eoiOQSr3cXU4k8x_z4FMBmkr5IIhMc94Y06doH3mmft3lAZi6y0hzKfDsHiInT5giKo5MSDcanTUFoAl715rGs3LTEAfsm0S8-gKW6_pyT8S_dAcYxWdTvyAKrnlxZdUfJnXDcHXo71ZU6TsFENqoerb0bjPbgRw"}
 Completed 200 OK in 9514ms (Views: 0.2ms | ActiveRecord: 0.0ms)
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateProducts (20160112102430)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (1.2ms)[0m  [1mCREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "uber_id" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160112102430"]]
+  [1m[36m (3.7ms)[0m  [1mcommit transaction[0m
+Migrating to CreateBookings (20160112122410)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "bookings" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160112122410"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to ChangeTokenColumnInUsers (20160112125623)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (1.4ms)[0m  [1mCREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "auth_token" varchar NOT NULL, "phone" varchar NOT NULL, "first_name" varchar, "last_name" varchar, "picture" varchar, "promo_code" varchar, "uuid" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_auth_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_auth_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_phone' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_phone' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (0.4ms)[0m  CREATE UNIQUE INDEX "tindex_ausers_on_auth_token" ON "ausers" ("auth_token")
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "tindex_ausers_on_phone" ON "ausers" ("phone")[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "tindex_ausers_on_email" ON "ausers" ("email")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "users"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "users"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "auth_token" text NOT NULL, "phone" varchar NOT NULL, "first_name" varchar, "last_name" varchar, "picture" varchar, "promo_code" varchar, "uuid" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_phone' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_phone' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_auth_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_auth_token' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_phone" ON "users" ("phone")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_phone' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_phone' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "index_users_on_auth_token" ON "users" ("auth_token")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "ausers"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "ausers"
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160112125623"]]
+  [1m[35m (2.1ms)[0m  commit transaction
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_auth_token' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_auth_token' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_phone' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_phone' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = ?[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = ?[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36mSQL (0.6ms)[0m  [1mINSERT INTO "users" ("auth_token", "picture", "email", "first_name", "last_name", "promo_code", "uuid", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["auth_token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsiYWxsX3RyaXBzIiwicmVxdWVzdCIsInByb2ZpbGUiXSwic3ViIjoiZjZkYzI5NjItOWVmMy00MWMzLTlhZmYtYzFjOGRkODY4NzlhIiwiaXNzIjoidWJlci11czEiLCJqdGkiOiI0YjFkZDZiMi1iNDJhLTRkZWItOGY1OC0wZWM2NjdlMzIwMjUiLCJleHAiOjE0NTUxOTQ3NjMsImlhdCI6MTQ1MjYwMjc2MiwidWFjdCI6ImFLU1p2WjMwY3g1WDNINW1ySHVIRnNCUzRWdTltYSIsIm5iZiI6MTQ1MjYwMjY3MiwiYXVkIjoiVUZIUVZPeFA0V2RPNlUzNHRndjExalB1bGJZU2RwOEgifQ.kd3wDwV8GiSoYS3EgVjHjjBrJVDRpcSgfHg18URsQ5sGQvmMPIivkINUEZxZtVRw55qztLHafykKBhMbnsJxTLAlhsHxEzTAqAmisg6I1fjWBIOfFgcf-uoyXfXKhDwjVd3o5N11-PIZ7Jv7cpjKuurCqIyjWjkBxm_I_ymHRUNfrq_Y5OxldN8WT02E7ouaxBALLaKOQIknoGHCrKU6nmO9jggKxQXnRq1AkryMJzSk3PAWC6YP7yyP2DNNz7Yhlh0Yu11eo4NPtaTPgn4nWkHeu23_EhH841gnKI6__yH14J15IOvMLe32SiuCWwvHqNbX5Gs4JDv8BOZ_HYcU5g"], ["picture", "https://d1w2poirtb3as9.cloudfront.net/default.jpeg"], ["email", "rishabh.pugalia@gmail.com"], ["first_name", "Rishabh"], ["last_name", "Pugalia"], ["promo_code", "50vv0"], ["uuid", "f6dc2962-9ef3-41c3-9aff-c1c8dd86879a"], ["created_at", "2016-01-12 13:05:29.149509"], ["updated_at", "2016-01-12 13:05:29.149509"]]
+  [1m[35m (0.1ms)[0m  rollback transaction
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = ?[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[35mUser Load (1.7ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = ?  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (2.7ms)[0m  INSERT INTO "users" ("auth_token", "picture", "email", "first_name", "last_name", "promo_code", "uuid", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)  [["auth_token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsiYWxsX3RyaXBzIiwicmVxdWVzdCIsInByb2ZpbGUiXSwic3ViIjoiZjZkYzI5NjItOWVmMy00MWMzLTlhZmYtYzFjOGRkODY4NzlhIiwiaXNzIjoidWJlci11czEiLCJqdGkiOiI0YjFkZDZiMi1iNDJhLTRkZWItOGY1OC0wZWM2NjdlMzIwMjUiLCJleHAiOjE0NTUxOTQ3NjMsImlhdCI6MTQ1MjYwMjc2MiwidWFjdCI6ImFLU1p2WjMwY3g1WDNINW1ySHVIRnNCUzRWdTltYSIsIm5iZiI6MTQ1MjYwMjY3MiwiYXVkIjoiVUZIUVZPeFA0V2RPNlUzNHRndjExalB1bGJZU2RwOEgifQ.kd3wDwV8GiSoYS3EgVjHjjBrJVDRpcSgfHg18URsQ5sGQvmMPIivkINUEZxZtVRw55qztLHafykKBhMbnsJxTLAlhsHxEzTAqAmisg6I1fjWBIOfFgcf-uoyXfXKhDwjVd3o5N11-PIZ7Jv7cpjKuurCqIyjWjkBxm_I_ymHRUNfrq_Y5OxldN8WT02E7ouaxBALLaKOQIknoGHCrKU6nmO9jggKxQXnRq1AkryMJzSk3PAWC6YP7yyP2DNNz7Yhlh0Yu11eo4NPtaTPgn4nWkHeu23_EhH841gnKI6__yH14J15IOvMLe32SiuCWwvHqNbX5Gs4JDv8BOZ_HYcU5g"], ["picture", "https://d1w2poirtb3as9.cloudfront.net/default.jpeg"], ["email", "rishabh.pugalia@gmail.com"], ["first_name", "Rishabh"], ["last_name", "Pugalia"], ["promo_code", "50vv0"], ["uuid", "f6dc2962-9ef3-41c3-9aff-c1c8dd86879a"], ["created_at", "2016-01-12 13:07:38.989155"], ["updated_at", "2016-01-12 13:07:38.989155"]]
+  [1m[36m (0.2ms)[0m  [1mrollback transaction[0m
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = ?[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "users" ("auth_token", "picture", "email", "first_name", "last_name", "promo_code", "uuid", "phone", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)[0m  [["auth_token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZXMiOlsiYWxsX3RyaXBzIiwicmVxdWVzdCIsInByb2ZpbGUiXSwic3ViIjoiZjZkYzI5NjItOWVmMy00MWMzLTlhZmYtYzFjOGRkODY4NzlhIiwiaXNzIjoidWJlci11czEiLCJqdGkiOiI0YjFkZDZiMi1iNDJhLTRkZWItOGY1OC0wZWM2NjdlMzIwMjUiLCJleHAiOjE0NTUxOTQ3NjMsImlhdCI6MTQ1MjYwMjc2MiwidWFjdCI6ImFLU1p2WjMwY3g1WDNINW1ySHVIRnNCUzRWdTltYSIsIm5iZiI6MTQ1MjYwMjY3MiwiYXVkIjoiVUZIUVZPeFA0V2RPNlUzNHRndjExalB1bGJZU2RwOEgifQ.kd3wDwV8GiSoYS3EgVjHjjBrJVDRpcSgfHg18URsQ5sGQvmMPIivkINUEZxZtVRw55qztLHafykKBhMbnsJxTLAlhsHxEzTAqAmisg6I1fjWBIOfFgcf-uoyXfXKhDwjVd3o5N11-PIZ7Jv7cpjKuurCqIyjWjkBxm_I_ymHRUNfrq_Y5OxldN8WT02E7ouaxBALLaKOQIknoGHCrKU6nmO9jggKxQXnRq1AkryMJzSk3PAWC6YP7yyP2DNNz7Yhlh0Yu11eo4NPtaTPgn4nWkHeu23_EhH841gnKI6__yH14J15IOvMLe32SiuCWwvHqNbX5Gs4JDv8BOZ_HYcU5g"], ["picture", "https://d1w2poirtb3as9.cloudfront.net/default.jpeg"], ["email", "rishabh.pugalia@gmail.com"], ["first_name", "Rishabh"], ["last_name", "Pugalia"], ["promo_code", "50vv0"], ["uuid", "f6dc2962-9ef3-41c3-9aff-c1c8dd86879a"], ["phone", "0"], ["created_at", "2016-01-12 13:09:40.158455"], ["updated_at", "2016-01-12 13:09:40.158455"]]
+  [1m[35m (1.2ms)[0m  commit transaction
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT "users".* FROM "users"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."email" = ?[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[35mUser Load (0.4ms)[0m  SELECT "users".* FROM "users" WHERE "users"."email" = ?  [["email", "asdsad"]]
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["email", "asdsad"]]
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."email" = ?  ORDER BY "users"."id" ASC LIMIT 1[0m  [["email", "rishabh.pugalia@gmail.com"]]
+  [1m[35m (0.3ms)[0m  begin transaction
+  [1m[36m (0.1ms)[0m  [1mcommit transaction[0m

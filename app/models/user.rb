@@ -33,5 +33,37 @@ class User < ActiveRecord::Base
     end
     JSON.parse(response) if response
   end
+  
+  def self.get_info(access_token)
+    url = "https://api.uber.com/v1/me"
+    begin
+      response = RestClient::Request.execute(
+        url: url, 
+        ssl_version: 'TLSv1_2', 
+        method: 'get', 
+        scope: 'profile', 
+        headers: {Authorization: "Bearer #{access_token}"}
+      )
+      resp = JSON.parse(response)
+      User.create_or_update_user(resp, access_token)
+    rescue Exception => e
+      puts e.to_s
+      response = nil
+    end
+  end
+
+  def self.create_or_update_user(resp, access_token)
+    user = User.where(email: resp['email']).first
+    user = User.new if user.blank?
+    user.auth_token = access_token
+    user.picture = resp['picture']
+    user.email = resp['email']
+    user.first_name = resp['first_name']
+    user.last_name = resp['last_name']
+    user.promo_code = resp['promo_code']
+    user.uuid = resp['uuid']
+    user.phone = '0' if user.phone.blank?
+    user.save
+  end
 
 end
