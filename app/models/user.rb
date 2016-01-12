@@ -82,6 +82,7 @@ class User < ActiveRecord::Base
       }
       book_params.merge!({:product_id => product_id}) if product_id.present?
       return book_params
+    end
   end
 
   def update_booking(details)
