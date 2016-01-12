@@ -6,8 +6,10 @@ class UsersController < ApplicationController
     puts params[:access_token].to_s
     render json: {error: 'missing_params'} and return if params[:phone].blank? || params[:access_token].blank?
     u = User.where(auth_token: params[:access_token]).first
-    u.phone = params[:phone]
-    u.save!
+    if u.present?
+      u.phone = params[:phone]
+      u.save!
+    end
     render json: { status: 'success' }
   end
 
