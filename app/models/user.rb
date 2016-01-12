@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
   def get_auth_token(phone)
-    User.where(phone: phone).auth_token rescue nil
+    User.where(phone: phone).last.auth_token rescue nil
   end
 
   @account_sid = 'AC1a61a323b5eeff094ce746f3bfdf2d52'
@@ -21,6 +21,16 @@ class User < ActiveRecord::Base
     #   r.Message "Sample text.Thanks for the message!"
     # end
     # render xml: twiml.text
+  end
+
+  def book_uber(params)
+    url = "https://sandbox-api.uber.com/v1/requests"
+    begin
+      response = RestClient::Request.execute(:url => url, :ssl_version => 'TLSv1_2', :method => 'post', :payload => params)
+    rescue Exception => e
+      response = nil
+    end
+    JSON.parse(response) if response
   end
 
 end
