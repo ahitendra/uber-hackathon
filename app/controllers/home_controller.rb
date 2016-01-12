@@ -3,7 +3,10 @@ class HomeController < ApplicationController
     token = params[:access_token]
 
     # Call the API get user info and save into User Model
-    User.get_info(access_token)
+    User.get_info(token)
     render json: { status: 'success' }
+  end
+
+  def index
   end
 end
