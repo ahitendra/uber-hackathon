@@ -19,7 +19,7 @@ class SmsController < ApplicationController
   private
 
   def book_uber
-    response = Booking.book_uber(params)
+    response = @user..book_uber(params)
   end
 
 end
